@@ -67,11 +67,11 @@
 			linkedList.Remove("1번 앞데이터");
 
 			// 링크드리스트 요소 탐색
-			DataStructure.LinkedListNode<string> findNode = linkedList.Find("0번 뒤데이터");
+			DataStructure.MyLinkedListNode<string> findNode = linkedList.Find("0번 뒤데이터");
 
 			// 링크드리스트 노드를 통한 노드 참조
-			DataStructure.LinkedListNode<string> prevNode = findNode.Prev;
-			DataStructure.LinkedListNode<string> nextNode = findNode.Next;
+			DataStructure.MyLinkedListNode<string> prevNode = findNode.Prev;
+			DataStructure.MyLinkedListNode<string> nextNode = findNode.Next;
 
 			// 링크드리스트 노드를 통한 노드 삽입
 			linkedList.AddBefore(findNode, "찾은노드 앞데이터");
