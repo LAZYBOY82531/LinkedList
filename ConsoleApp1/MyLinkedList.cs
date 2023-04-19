@@ -146,19 +146,17 @@ namespace DataStructure
 			if (value == null)  //예외2 : 노드가 null인 경우
 				throw new ArgumentNullException(nameof(value));
 
-			//0, 지웟을 때 head나 tail 이 변경되는 경우
-			if (head == value)
+			if (head == value)                        //지웟을 때 head나 tail 이 변경되는 경우
 				head = value.next;
 			if (tail == value)
 				tail = value.prev;
-			//1, 연결구조 바꾸기
-			if (value.prev != null)
+
+			if (value.prev != null)                    //연결구조 바꾸기
 				value.prev.next = value.next;
 			if (value.next != null)
 				value.next.prev = value.prev;
 
-			//2, 실제로 노드를 삭제하기
-			count--;
+			count--;                                       //연결리스트에서 값이 삭제되었으니 count를 줄임
 		}
 
 		public bool Remove(T value)                     //연결리스트에 T value값이 있다면 true값을 반환하고 지우고, 없다면 false를 반환하는 함수
