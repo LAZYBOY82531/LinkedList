@@ -92,10 +92,11 @@ namespace DataStructure
 			//2, 연결주고 바꾸기
 			newNode.next = node;
 			newNode.prev = node.prev;
-			node.prev.next = newNode;
 			if (node.prev != null)
-				node.prev = newNode;
-
+			{
+			node.prev.next = newNode;
+			node.prev = newNode;
+			}
 			//3, 갯수 증가
 			count++;
 			return newNode;
@@ -146,16 +147,6 @@ namespace DataStructure
 				while (target != null)
 				{
 					if (comparer.Equals(target.data, value))
-						return target;
-					else
-						target = target.next;
-				}
-			}
-			else
-			{
-				while (target != null)
-				{
-					if (target.data == null)
 						return target;
 					else
 						target = target.next;
