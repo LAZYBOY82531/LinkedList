@@ -13,7 +13,7 @@ namespace DataStructure
 		internal LinkedList<T> list;
 		internal LinkedListNode<T> prev;
         internal LinkedListNode<T> next;
-        private T data;
+        internal T data;
 
 		public LinkedListNode(T value)
 		{
@@ -49,7 +49,7 @@ namespace DataStructure
     {
 		private LinkedListNode<T> head;
 		private LinkedListNode<T> tail;
-		private int count;
+		private int count = 0;
 
 		public LinkedListNode<T> First { get { return head; } }
 		public LinkedListNode<T> Last { get { return tail; } }
@@ -80,6 +80,89 @@ namespace DataStructure
 			return newNode;
         }
 
+		public LinkedListNode<T> AddBefore(LinkedListNode<T> node, T value)
+		{
+			if (node.List != this) //예외1 : 노드가 연결리스트에 포함되어 있지 않은 경우
+				throw new InvalidOperationException();
+			if (node == null)  //예외2 : 노드가 null인 경우
+				throw new ArgumentNullException(nameof(node));
+			//1, 새로운 노드 만들기
+			LinkedListNode<T> newNode = new LinkedListNode<T>(this, value);
+
+			//2, 연결주고 바꾸기
+			newNode.next = node;
+			newNode.prev = node.prev;
+			node.prev.next = newNode;
+			if (node.prev != null)
+				node.prev = newNode;
+
+			//3, 갯수 증가
+			count++;
+			return newNode;
+		}
+
+		public void Remove(LinkedListNode<T> node)
+		{
+			if(node.List != this) //예외1 : 노드가 연결리스트에 포함되어 있지 않은 경우
+				throw new InvalidOperationException();
+			if(node == null)  //예외2 : 노드가 null인 경우
+				throw new ArgumentNullException(nameof(node));
+
+			//0, 지웟을 때 head나 tail 이 변경되는 경우
+			if (head == node)
+				head = node.next;
+			if (tail == node)
+				tail = node.prev;
+			//1, 연결구조 바꾸기
+			if (node.prev != null)
+				node.prev.next = node.next;
+			if(node.next != null)
+				node.next.prev = node.prev;
+
+			//2, 실제로 노드를 삭제하기
+			count--;
+        }
+
+		public bool Remove(T value)
+        {
+			LinkedListNode<T> node = Find(value);
+			if (node != null)
+			{
+				Remove(node);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		public LinkedListNode<T> Find(T value)
+		{
+			LinkedListNode<T> target = head;
+			EqualityComparer<T> comparer = EqualityComparer<T>.Default;
+			if (value != null)
+			{
+				while (target != null)
+				{
+					if (comparer.Equals(target.data, value))
+						return target;
+					else
+						target = target.next;
+				}
+			}
+			else
+			{
+				while (target != null)
+				{
+					if (target.data == null)
+						return target;
+					else
+						target = target.next;
+				}
+			}
+			return null;
+		}
 		//링크드 리스트 기술면접 조사
 		/*링크드리스트: 각각의 데이터가 노드로 연결되어 구성된 자료구조. 배열과 유사하나 삽입,삭제에서 유리하다. 
 		 * 배열은 삽입,삭제시 전,후로 있는 인덱스들을 모두 밀거나 당겨줘야 하지만 링크드리스트는 삽입,삭제시 앞,뒤로 가르키는 노드의 위치만 
